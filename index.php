@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" onclick="adduser()">Submit</button>
+                    <button type="button" id="mybutton" class="btn btn-dark" onclick="adduser()">Submit</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -130,7 +130,9 @@
                 success: function(data, status) {
                     // function to display data;
                     $('#completeModal').modal('hide');
-
+                    $('#mybutton').on('submit', function() {
+                        $(this).find('input[type="submit"], button[type="submit]').prop('disable', true);
+                    })
                     displayData();
                 }
             })

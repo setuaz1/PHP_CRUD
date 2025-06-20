@@ -34,32 +34,9 @@ try {
         $place = $_POST['updateplace'];
 
         $stmt = $con->prepare("UPDATE `crud` set name = ?, email = ?, mobile = ?, place = ? where id = ?");
-        $stmt->bind_param("sssii", $name, $email, $mobile, $place, $uniqueid);
+        $stmt->bind_param("ssssi", $name, $email, $mobile, $place, $uniqueid);
         $stmt->execute();
-
-        //     $sql = "update `crud` set name = '$name', email = '$email', mobile = '$mobile', place = '$place'
-        // where id = '$uniqueid'";
-
-        //     $result = mysqli_query($con, $sql);
     }
 } catch (\Exception $e) {
     echo json_encode(['status' => 500, 'message => exception caught: ' . $e->getMessage()]);
 }
-
-
-
-
-// try {
-//         $uniqueid = $_POST['hiddendata'];
-//         $name = $_POST['updatename'];
-//         $email = $_POST['updateemail'];
-//         $mobile = $_POST['updatemobile'];
-//         $place = $_POST['updateplace'];
-
-//         $sql = "update `crud` set name = '$name', email = '$email', mobile = '$mobile', place = '$place'
-//     where id = '$uniqueid'";
-
-//         $result = mysqli_query($con, $sql);
-//     } catch (\Exception $e) {
-//         echo json_encode(['status' => 500, 'message => exception caught: ' . $e->getMessage()]);
-//     }
