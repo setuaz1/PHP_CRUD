@@ -1,43 +1,50 @@
 <?php
 include 'connect.php';
 
+try {
 
-if (isset($_POST['updateid'])) {
-    $user_id = $_POST['updateid'];
+    if (isset($_POST['updateid'])) {
+        $user_id = $_POST['updateid'];
 
-    $sql = "Select * from `crud` where id = $user_id";
+        $stmt = $con->prepare("Select * from `crud` where id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    $result = mysqli_query($con, $sql);
-    $response = array();
-    while ($row = mysqli_fetch_assoc($result)) {
-        $response = $row;
+        // $sql = "Select * from `crud` where id = $user_id";
+
+        // $result = mysqli_query($con, $sql);
+        // $response = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $response = $row;
+        }
+        echo json_encode($response);
+    } else {
+        $response['status'] = 404;
+        $response['message'] = "Invalid or data not found";
     }
-    echo json_encode($response);
-} else {
-    $response['status'] = 200;
-    $response['message'] = "Invalid or data not found";
-}
 
-// update query
+    // update query
 
-if (isset($_POST['hiddendata'])) {
-    try {
+    if (isset($_POST['hiddendata'])) {
         $uniqueid = $_POST['hiddendata'];
         $name = $_POST['updatename'];
         $email = $_POST['updateemail'];
         $mobile = $_POST['updatemobile'];
         $place = $_POST['updateplace'];
 
-        $sql = "update `crud` set name = '$name', email = '$email', mobile = '$mobile', place = '$place'
-    where id = '$uniqueid'";
+        $stmt = $con->prepare("UPDATE `crud` set name = ?, email = ?, mobile = ?, place = ? where id = ?");
+        $stmt->bind_param("sssii", $name, $email, $mobile, $place, $uniqueid);
+        $stmt->execute();
 
-        $result = mysqli_query($con, $sql);
-    } catch (\Exception $e) {
-        echo json_encode(['status' => 500, 'message => exception caught: ' . $e->getMessage()]);
+        //     $sql = "update `crud` set name = '$name', email = '$email', mobile = '$mobile', place = '$place'
+        // where id = '$uniqueid'";
+
+        //     $result = mysqli_query($con, $sql);
     }
+} catch (\Exception $e) {
+    echo json_encode(['status' => 500, 'message => exception caught: ' . $e->getMessage()]);
 }
-
-
 
 
 
